@@ -2,14 +2,6 @@
 
 A repository for learning git.
 
-## Git Resources
-
-* [Git Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf)
-* [Git Tutorial](https://www.atlassian.com/git/tutorials/what-is-version-control)
-* [Git Branching](https://learngitbranching.js.org/)
-* [Git Book](https://git-scm.com/book/en/v2)
-* [Visualizing GIT](https://git-school.github.io/visualizing-git/)
-
 ## Vocabulary
 
 * **Repository** - A repository is a directory which contains your project work, as well as a few files (hidden by default) which are the local git database. Repositories can exist either locally on your computer or as a remote copy on another computer. A repository is made up of commits.
@@ -20,8 +12,7 @@ A repository for learning git.
 * **Commit** - A commit, or "revision", is an individual change to a file (or set of files). It's like when you save a file, except with Git, every time you save it creates a unique ID (a.k.a. the "SHA" or "hash") that allows you to keep record of what changes were made when and by who. Commits usually contain a commit message which is a brief description of what changes were made.
 * **Staging area** - The staging area is where you place files when you're ready to commit them. Unlike your working directory, in the staging area you can choose what files will be included in your next commit by git adding the specific files you want, instead of everything in your working directory.
 * **Merge** - Merging takes the changes from one branch and applies them into another. This often happens as a pull request (which can be thought of as a request to merge), or via the command line.
-* **Pull** - Pull refers to when you are fetching in changes from the remote and merging them. For instance, if someone has edited the remote file you're both working on, you'll want to pull in those changes to your local copy so that it's up to date.
-* **Fork** - A fork is a personal clone of another user's repository that lives on your git server. Used in open source development.
+* **Conflict** - A conflict arises when merging changes from another branch that have conflicting edits. A human must resolve this conflict before the branch can be merged. Conflicts are resolved by the user merging the changes.
 
 ## Git states and transitions
 
@@ -69,43 +60,14 @@ The following diagram shows the possible transitions between the states.
      |             |            |                    |
 ```
 
-## Merge VS Rebase
+## Recommendations
 
-The difference between merge and rebase is that merge creates a new commit that combines the changes of the two branches, while rebase moves the commits of one branch on top of the other branch.
-
-Merge is easier to understand and is the default strategy for merging branches. However, it creates a new commit that combines the changes of the two branches. This can lead to a messy commit history.
-
-Rebase is more complicated to understand, but it creates a cleaner commit history. It moves the commits of one branch on top of the other branch. Merge conflicts are a bit more difficult to resolve with rebase.
-
-Merge:
-
-```txt
-
-          A---B---C topic
-         /
-    D---E---F---G master
-
-Becomes
-
-          A---B---C topic
-         /         \
-    D---E---F---G---H master
-```
-
-Rebase:
-
-```txt
-
-          A---B---C topic
-         /
-    D---E---F---G master
-
-Becomes
-
-                  A'--B'--C' topic
-                 /
-    D---E---F---G master
-```
+* Commit often
+* Commit messages should be descriptive and in imperative mood
+  * [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
+  * *If applied, this commit will* **Add banana split recipie**
+* Branches should be short lived
+* Use pull requests for code reviews and code sharing
 
 ## Git Cheat Sheet
 
@@ -176,3 +138,63 @@ Becomes
   * `git switch master`
   * `git reset --hard HEAD~1` - reset master to previous commit
   * `git switch [branch-name]`
+
+## Git Resources
+
+* [Git Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf)
+* [Git Tutorial](https://www.atlassian.com/git/tutorials/what-is-version-control)
+* [Git Branching](https://learngitbranching.js.org/)
+* [Git Book](https://git-scm.com/book/en/v2)
+* [Visualizing GIT](https://git-school.github.io/visualizing-git/)
+
+## Tools
+
+* [Git](https://git-scm.com/)
+* [Credential Manager for azure devops](https://learn.microsoft.com/en-us/azure/devops/repos/git/set-up-credential-managers?view=azure-devops)
+* [VsCode](https://code.visualstudio.com/)
+  * [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+  * [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
+* [Posh-Git for Powershell](https://dahlbyk.github.io/posh-git/)
+
+## Merge VS Rebase
+
+The difference between merge and rebase is that merge creates a new commit that combines the changes of the two branches, while rebase moves the commits of one branch on top of the other branch.
+
+Merge is easier to understand and is the default strategy for merging branches. However, it creates a new commit that combines the changes of the two branches. This can lead to a messy commit history.
+
+Rebase is more complicated to understand, but it creates a cleaner commit history. It moves the commits of one branch on top of the other branch. Merge conflicts are a bit more difficult to resolve with rebase.
+
+Merge:
+
+```txt
+
+          A---B---C topic
+         /
+    D---E---F---G master
+
+Becomes
+
+          A---B---C topic
+         /         \
+    D---E---F---G---H master
+```
+
+Rebase:
+
+```txt
+
+          A---B---C topic
+         /
+    D---E---F---G master
+
+Becomes
+
+                  A'---B'---C' topic
+                 /
+    D---E---F---G master
+
+It looks like the topic branch was branched directly off of master.
+The topic branch can then trivially be merged into master:
+
+    D---E---F---G---A'---B'---C' topic, master
+```
