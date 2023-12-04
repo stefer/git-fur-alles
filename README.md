@@ -8,6 +8,7 @@ A repository for learning git.
 * [Git Tutorial](https://www.atlassian.com/git/tutorials/what-is-version-control)
 * [Git Branching](https://learngitbranching.js.org/)
 * [Git Book](https://git-scm.com/book/en/v2)
+* [Visualizing GIT](https://git-school.github.io/visualizing-git/)
 
 ## Vocabulary
 
@@ -35,8 +36,6 @@ As a last step, committed files can be pushed to a remote repository.
 The following diagram shows the possible transitions between the states.
 
 ```other
-
-```other
                            +---------+
 +----------+   +--------+  | Comitted|           +--------+
 |  Working |   |Staging |  |  .git   |           | Remote |
@@ -48,7 +47,7 @@ The following diagram shows the possible transitions between the states.
      |             |            |                    |
      |             |            |                    |
      |<-------------------------+                    |
-     |          checkout        |                    |
+     |     checkout/switch      |                    |
      |             |            |                    |
      |             |            |                    |
      +------------>|            |                    |
@@ -70,6 +69,44 @@ The following diagram shows the possible transitions between the states.
      |             |            |                    |
 ```
 
+## Merge VS Rebase
+
+The difference between merge and rebase is that merge creates a new commit that combines the changes of the two branches, while rebase moves the commits of one branch on top of the other branch.
+
+Merge is easier to understand and is the default strategy for merging branches. However, it creates a new commit that combines the changes of the two branches. This can lead to a messy commit history.
+
+Rebase is more complicated to understand, but it creates a cleaner commit history. It moves the commits of one branch on top of the other branch. Merge conflicts are a bit more difficult to resolve with rebase.
+
+Merge:
+
+```txt
+
+          A---B---C topic
+         /
+    D---E---F---G master
+
+Becomes
+
+          A---B---C topic
+         /         \
+    D---E---F---G---H master
+```
+
+Rebase:
+
+```txt
+
+          A---B---C topic
+         /
+    D---E---F---G master
+
+Becomes
+
+                  A'--B'--C' topic
+                 /
+    D---E---F---G master
+```
+
 ## Git Cheat Sheet
 
 * Setup
@@ -84,24 +121,28 @@ The following diagram shows the possible transitions between the states.
   * `git add [file]` - add file to staging area
   * `git add -a` - add all files
   * `git commit -m “[descriptive message]”` - commit staged changes
-  * `git commit -am “[descriptive message]”` - add and commit
-* Branch & Merge
+  * `git commit -am “[descriptive message]”` - add all and commit
+* Branch
   * `git branch` - list branches
   * `git branch [branch-name]` - create branch
   * `git switch [branch-name]` - switch to branch
   * `git switch -c [branch-name]` - create and switch to branch
+  * `git checkout [branch-name]` - switch to branch
+  * `git checkout -b [branch-name]` - create and switch to branch
+* Fetch and Merge
   * `git fetch` - fetch changes from remote repo and get remote branches
   * `git pull` - fetch and merge changes from remote repo
   * `git pull origin master` - fetch and merge changes from origin (upstream) master branch into current branch
+  * `git merge [branch-name]` - merge branch into current branch
 * Stash
   * `git stash` - stash changes from working directory
   * `git stash list` - list stashed changes
   * `git stash pop` - apply stashed changes to working directory
 * Undo
+  * `git clean -f` - remove untracked files from working directory
   * `git reset [file]` - unstage file
   * `git reset --hard` - discard all changes (changes are lost)
   * `git checkout [file]` - discard changes in working directory
-  * `git checkout [branch-name]` - discard changes in working directory and switch to branch
   * `git revert [commit]` - revert commit, create new commit with inverse changes
 
 ## Workflow & Commands
@@ -111,27 +152,26 @@ The following diagram shows the possible transitions between the states.
   * `git pull` - fetch remote changes
   * Work, work work
   * `git commit -am “Add banana split recipie”`
-  * Work, work, work
-  * `git commit -am “Apply new styling”`
   * `git pull` - fetch and merge changes from other authors
-  * `git push` - push branch to remote repo
+  * Resolve conflicts
+  * `git push` - push updates in master to remote repo
 
-* Basic branch and merge workflow
+* Basic branch and pull request workflow
   * `git switch master` - Switch to master branch
   * `git pull` - fetch remote changes
   * `git switch -c [branch-name]` - create and switch to branch
   * Work, work work
   * `git commit -am “Add banana split recipie”`
-  * Work, work, work
-  * `git commit -am “Apply new styling”`
-  * `git push origin [branch-name]` - push branch to remote repo
+  * `git push -u` - push branch to remote repo
   * Create PR, review
   * `git pull origin master` - fetch and merge changes from other authors
-  * Work, work, work
+  * Resolve conflicts and make other changes
   * `git commit -am “Changes after review”`
   * `git push`
 
 * Fix commit to master that should have been in branch
+  * `git commit -am “Add banana split recipie”`
+  * Oh, no! This should have been in a branch!
   * `git switch -c [branch-name]` - create and switch to branch (including commit)
   * `git switch master`
   * `git reset --hard HEAD~1` - reset master to previous commit
